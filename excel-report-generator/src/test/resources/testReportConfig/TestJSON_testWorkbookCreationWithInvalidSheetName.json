@@ -1,0 +1,17 @@
+{
+  "username" : "",
+  "password" : "",
+  "url" : "",
+  "destinationFile" : "",
+  "reportSheets" : [
+    {
+      "sheetName" : "sheet*\\?:/[]",
+      "searchJob" : {
+        "query" : "",
+        "from" : "",
+        "to" : "",
+        "timezone" : ""
+      }
+    }
+  ]
+}

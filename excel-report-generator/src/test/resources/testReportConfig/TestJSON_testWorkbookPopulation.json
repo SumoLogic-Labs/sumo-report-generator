@@ -1,0 +1,26 @@
+{
+  "username" : "",
+  "password" : "",
+  "url" : "",
+  "destinationFile" : "",
+  "reportSheets" : [
+    {
+      "sheetName" : "ingest",
+      "searchJob" : {
+        "query": "",
+        "from": "",
+        "to": "",
+        "timezone": ""
+      }
+    },
+    {
+      "sheetName" : "ingest2",
+      "searchJob" : {
+        "query": "",
+        "from": "",
+        "to": "",
+        "timezone": ""
+      }
+    }
+  ]
+}
