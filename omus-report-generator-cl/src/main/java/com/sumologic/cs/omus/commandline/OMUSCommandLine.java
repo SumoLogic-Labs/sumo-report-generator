@@ -38,7 +38,7 @@ public class OMUSCommandLine {
             printHelp();
         } else if (commandLine.hasOption("c")) {
             ApplicationContext context = new ClassPathXmlApplicationContext("classpath*:spring/spring-context.xml");
-            ReportGenerator reportGenerator = (ReportGenerator) context.getBean(ReportGenerator.class);
+            ReportGenerator reportGenerator = context.getBean(ReportGenerator.class);
             ObjectMapper mapper = new ObjectMapper();
             ReportConfig reportConfig = mapper.readValue(new File(commandLine.getOptionValue("c")), ReportConfig.class);
             reportGenerator.generateReport(reportConfig);

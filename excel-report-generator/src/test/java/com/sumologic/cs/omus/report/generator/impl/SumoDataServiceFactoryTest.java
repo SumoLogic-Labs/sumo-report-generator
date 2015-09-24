@@ -1,6 +1,7 @@
 package com.sumologic.cs.omus.report.generator.impl;
 
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
+import com.sumologic.cs.omus.service.SumoDataServiceFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

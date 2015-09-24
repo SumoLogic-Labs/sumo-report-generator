@@ -6,6 +6,7 @@ import com.sumologic.client.searchjob.model.SearchJobField;
 import com.sumologic.client.searchjob.model.SearchJobRecord;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
 import com.sumologic.cs.omus.service.SumoDataService;
+import com.sumologic.cs.omus.service.SumoDataServiceFactory;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.After;
