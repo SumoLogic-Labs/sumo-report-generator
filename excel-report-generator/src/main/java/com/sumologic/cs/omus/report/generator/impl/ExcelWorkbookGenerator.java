@@ -1,5 +1,6 @@
 package com.sumologic.cs.omus.report.generator.impl;
 
+import com.sumologic.cs.omus.report.generator.api.OmusReportGenerationException;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
 import com.sumologic.cs.omus.report.generator.api.ReportSheet;
 import org.apache.commons.logging.Log;
@@ -15,27 +16,36 @@ import java.io.IOException;
 @Service
 public class ExcelWorkbookGenerator implements WorkbookGenerator {
 
-    private final Log logger = LogFactory.getLog(ExcelWorkbookGenerator.class);
+    private static final Log LOGGER = LogFactory.getLog(ExcelWorkbookGenerator.class);
 
     @Override
-    public void generateWorkbookWithSheets(ReportConfig reportConfig) throws IOException {
-        logger.debug("creating empty workbook with sheets");
+    public void generateWorkbookWithSheets(ReportConfig reportConfig) throws OmusReportGenerationException {
+        try {
+            openAndGenerateWorkbook(reportConfig);
+        } catch (IOException e) {
+            LOGGER.error(e);
+            throw new OmusReportGenerationException("unable to generate workbook!");
+        }
+    }
+
+    private void openAndGenerateWorkbook(ReportConfig reportConfig) throws IOException {
+        LOGGER.debug("creating empty workbook with sheets");
         Workbook workbook = new XSSFWorkbook();
         FileOutputStream fileOut = new FileOutputStream(reportConfig.getDestinationFile());
         for (ReportSheet sheet : reportConfig.getReportSheets()) {
             String safeName = getSafeSheetName(sheet.getSheetName());
-            logger.debug("creating sheet " + safeName);
+            LOGGER.debug("creating sheet " + safeName);
             workbook.createSheet(safeName);
         }
         workbook.write(fileOut);
         fileOut.close();
-        logger.debug("workbook created");
+        LOGGER.debug("workbook created");
     }
 
     private String getSafeSheetName(String sheetName) {
         String safeSheetName = WorkbookUtil.createSafeSheetName(sheetName);
         if (!safeSheetName.equals(sheetName)) {
-            logger.warn("Sheet name " + sheetName + " contains invalid characters, renaming to " + safeSheetName);
+            LOGGER.warn("Sheet name " + sheetName + " contains invalid characters, renaming to " + safeSheetName);
         }
         return safeSheetName;
     }

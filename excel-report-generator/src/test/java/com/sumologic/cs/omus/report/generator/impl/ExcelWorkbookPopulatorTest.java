@@ -4,9 +4,11 @@ import com.sumologic.client.searchjob.model.GetRecordsForSearchJobResponse;
 import com.sumologic.client.searchjob.model.GetSearchJobStatusResponse;
 import com.sumologic.client.searchjob.model.SearchJobField;
 import com.sumologic.client.searchjob.model.SearchJobRecord;
+import com.sumologic.cs.omus.report.generator.api.OmusReportGenerationException;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
 import com.sumologic.cs.omus.service.SumoDataService;
 import com.sumologic.cs.omus.service.SumoDataServiceFactory;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.After;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +28,8 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ExcelWorkbookPopulatorTest extends BaseExcelTest {
@@ -44,6 +49,20 @@ public class ExcelWorkbookPopulatorTest extends BaseExcelTest {
     @After
     public void tearDown() {
         Mockito.reset(sumoDataServiceFactory, sumoDataService);
+    }
+
+    @Test (expected = OmusReportGenerationException.class)
+    public void testIOException() throws Exception {
+        ReportConfig reportConfig = mock(ReportConfig.class);
+        doThrow(IOException.class).when(reportConfig).getDestinationFile();
+        workbookPopulator.populateWorkbookWithData(reportConfig);
+    }
+
+    @Test (expected = OmusReportGenerationException.class)
+    public void testInvalidFormatException() throws Exception {
+        ReportConfig reportConfig = mock(ReportConfig.class);
+        doThrow(InvalidFormatException.class).when(reportConfig).getDestinationFile();
+        workbookPopulator.populateWorkbookWithData(reportConfig);
     }
 
     @Test
@@ -143,7 +162,6 @@ public class ExcelWorkbookPopulatorTest extends BaseExcelTest {
         records.add(record2);
         recordsResponse.setRecords(records);
         return recordsResponse;
-
     }
 
 }

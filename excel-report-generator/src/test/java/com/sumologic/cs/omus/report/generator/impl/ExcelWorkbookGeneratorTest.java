@@ -1,5 +1,6 @@
 package com.sumologic.cs.omus.report.generator.impl;
 
+import com.sumologic.cs.omus.report.generator.api.OmusReportGenerationException;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -31,7 +32,7 @@ public class ExcelWorkbookGeneratorTest extends BaseExcelTest {
         assertEquals("sheet2", createdWorkbook.getSheetName(1));
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = OmusReportGenerationException.class)
     public void testWorkbookWithSheetsCreationException() throws Exception {
         ReportConfig reportConfig = mock(ReportConfig.class);
         doThrow(IOException.class).when(reportConfig).getDestinationFile();

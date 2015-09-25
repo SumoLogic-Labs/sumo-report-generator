@@ -48,6 +48,16 @@
             <version>${jackson.version}</version>
         </dependency>
 
+        <!-- start test dependencies-->
+        <dependency>
+            <groupId>com.sumologic.cs</groupId>
+            <artifactId>test-common</artifactId>
+            <type>test-jar</type>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- end test dependencies-->
+
     </dependencies>
 
     <build>

@@ -63,7 +63,6 @@ public class ReportConfig {
     public String toString() {
         return "ReportConfig{" +
                 "username='" + username + '\'' +
-                ", password='" + password + '\'' +
                 ", url='" + url + '\'' +
                 ", destinationFile='" + destinationFile + '\'' +
                 ", propertyReplacementConfig=" + propertyReplacementConfig +

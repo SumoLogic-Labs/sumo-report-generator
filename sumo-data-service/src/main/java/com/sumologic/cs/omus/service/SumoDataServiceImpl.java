@@ -13,7 +13,8 @@ import java.util.Properties;
 
 public class SumoDataServiceImpl implements SumoDataService {
 
-    private static Log logger = LogFactory.getLog(SumoDataServiceImpl.class);
+    private static final Log LOGGER = LogFactory.getLog(SumoDataServiceImpl.class);
+    private static int POLL_INTERVAL = 5000;
 
     private SumoLogicClient client;
     private PropertyReplacementConfig propertyReplacementConfig;
@@ -25,7 +26,7 @@ public class SumoDataServiceImpl implements SumoDataService {
 
     @Override
     public String executeSearchJob(SearchJob searchJob) {
-        logger.info("executing search job: " + searchJob.toString());
+        LOGGER.info("executing search job: " + searchJob.toString());
         SearchJob processedSearchJob = processReplacementProperties(searchJob, propertyReplacementConfig);
         return client.createSearchJob(
                 processedSearchJob.getQuery(), processedSearchJob.getFrom(), processedSearchJob.getTo(), processedSearchJob.getTimezone());
@@ -34,13 +35,13 @@ public class SumoDataServiceImpl implements SumoDataService {
     @Override
     public GetSearchJobStatusResponse pollSearchJobUntilComplete(String searchJobId) {
         GetSearchJobStatusResponse response = client.getSearchJobStatus(searchJobId);
-        while (response.getState().equals("GATHERING RESULTS")) {
-            logger.info("checking search job status");
-            logger.info("search job state is " + response.getState() + ", will recheck in 5 seconds");
+        while ("GATHERING RESULTS".equals(response.getState())) {
+            LOGGER.info("checking search job status");
+            LOGGER.info("search job state is " + response.getState() + ", will recheck in 5 seconds");
             try {
-                Thread.sleep(5000);
+                Thread.sleep(POLL_INTERVAL);
             } catch (InterruptedException e) {
-                logger.error(e.getMessage());
+                LOGGER.error(e.getMessage());
             }
             response = client.getSearchJobStatus(searchJobId);
         }
@@ -66,10 +67,10 @@ public class SumoDataServiceImpl implements SumoDataService {
 
     private String replacePlaceholders(String value, Properties properties) {
         if (value.contains("$")) {
-            logger.debug("replacing placeholders in " + value);
+            LOGGER.debug("replacing placeholders in " + value);
             PropertyPlaceholderHelper helper = new PropertyPlaceholderHelper("${", "}");
             String newValue = helper.replacePlaceholders(value, properties);
-            logger.debug("after replacement: " + newValue);
+            LOGGER.debug("after replacement: " + newValue);
             return newValue;
         } else {
             return value;

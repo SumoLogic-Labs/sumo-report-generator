@@ -6,4 +6,8 @@ public class OmusReportGenerationException extends Exception {
         super(message);
     }
 
+    public OmusReportGenerationException(Throwable cause) {
+        super(cause);
+    }
+
 }
