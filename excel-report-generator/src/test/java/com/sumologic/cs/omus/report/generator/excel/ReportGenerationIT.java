@@ -1,4 +1,4 @@
-package com.sumologic.cs.omus.report.generator.impl;
+package com.sumologic.cs.omus.report.generator.excel;
 
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
 import com.sumologic.cs.omus.report.generator.api.ReportGenerator;
@@ -12,13 +12,13 @@ public class ReportGenerationIT extends BaseExcelTest {
 
     @Test
     public void test() throws Exception {
-        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/TestJSON_testWithoutReplacements.json");
+        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/TestJSON_IT.json");
         reportGenerator.generateReport(reportConfig);
     }
 
     @Test
     public void testWithReplacements() throws Exception {
-        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/TestJSON_testWithReplacements.json");
+        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/TestJSON_IT.json");
         reportGenerator.generateReport(reportConfig);
     }
 

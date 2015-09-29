@@ -5,5 +5,5 @@ public class OmusReportGenerationException extends Exception {
     public OmusReportGenerationException(String message) {
         super(message);
     }
-
+    
 }

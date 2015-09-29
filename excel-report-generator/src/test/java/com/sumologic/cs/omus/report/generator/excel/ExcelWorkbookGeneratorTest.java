@@ -1,5 +1,6 @@
-package com.sumologic.cs.omus.report.generator.impl;
+package com.sumologic.cs.omus.report.generator.excel;
 
+import com.sumologic.cs.omus.report.generator.api.OmusReportGenerationException;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -22,7 +23,7 @@ public class ExcelWorkbookGeneratorTest extends BaseExcelTest {
     @Test
     public void testWorkbookWithSheetsCreation() throws Exception {
         ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/TestJSON_testWorkbookWithSheetsCreation.json");
-        workbookGenerator.generateWorkbookWithSheets(reportConfig);
+        workbookGenerator.generateWorkbook(reportConfig);
         File file = new File(reportConfig.getDestinationFile());
         Assert.assertTrue(file.exists());
         Workbook createdWorkbook = new XSSFWorkbook(file);
@@ -31,17 +32,17 @@ public class ExcelWorkbookGeneratorTest extends BaseExcelTest {
         assertEquals("sheet2", createdWorkbook.getSheetName(1));
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = OmusReportGenerationException.class)
     public void testWorkbookWithSheetsCreationException() throws Exception {
         ReportConfig reportConfig = mock(ReportConfig.class);
         doThrow(IOException.class).when(reportConfig).getDestinationFile();
-        workbookGenerator.generateWorkbookWithSheets(reportConfig);
+        workbookGenerator.generateWorkbook(reportConfig);
     }
 
     @Test
     public void testWorkbookCreationWithInvalidSheetName() throws Exception {
         ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/TestJSON_testWorkbookCreationWithInvalidSheetName.json");
-        workbookGenerator.generateWorkbookWithSheets(reportConfig);
+        workbookGenerator.generateWorkbook(reportConfig);
         File file = new File(reportConfig.getDestinationFile());
         Assert.assertTrue(file.exists());
         Workbook createdWorkbook = new XSSFWorkbook(file);

@@ -1,4 +1,4 @@
-package com.sumologic.cs.omus.report.generator.impl;
+package com.sumologic.cs.omus.service;
 
 import com.sumologic.client.SumoLogicClient;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
