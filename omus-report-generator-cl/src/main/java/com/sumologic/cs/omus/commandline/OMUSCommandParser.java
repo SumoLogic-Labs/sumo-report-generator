@@ -71,6 +71,8 @@ public class OMUSCommandParser {
             Logger.getRootLogger().setLevel(Level.DEBUG);
         } else if (commandLine.hasOption("t")) {
             Logger.getRootLogger().setLevel(Level.TRACE);
+        } else if (commandLine.hasOption("v")) {
+            LOGGER.info(getClass().getPackage().getImplementationVersion());
         }
     }
 
@@ -80,6 +82,7 @@ public class OMUSCommandParser {
         options.addOption( "d", "debug", false, "Enable debug logging." );
         options.addOption( "h", "help", false, "Prints help information." );
         options.addOption( "t", "trace", false, "Enable trace logging." );
+        options.addOption( "v", "version", false, "Log the version of the utility" );
         return options;
     }
 
