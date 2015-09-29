@@ -7,8 +7,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>excel-report-generator-impl</artifactId>
-    <name>Customer Success : OMUS : omus-parent : excel-report-generator-impl</name>
+    <artifactId>excel-report-generator</artifactId>
+    <name>Customer Success : OMUS : omus-parent : excel-report-generator</name>
 
     <dependencies>
 
@@ -33,14 +33,20 @@
             <version>${poi.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sumologic.api.client</groupId>
-            <artifactId>sumo-java-client</artifactId>
-            <version>${sumo.java.client.version}</version>
+            <groupId>com.sumologic.cs</groupId>
+            <artifactId>report-generator-api</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-annotations</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -58,7 +64,13 @@
             <groupId>com.sumologic.cs</groupId>
             <artifactId>test-common</artifactId>
             <type>test-jar</type>
-            <version>${project.version}</version>
+            <version>${test.common.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-io</groupId>
+                    <artifactId>commons-io</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>test</scope>
         </dependency>
         <!-- end test dependencies-->

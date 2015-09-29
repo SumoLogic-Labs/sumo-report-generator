@@ -76,4 +76,5 @@ public class SumoDataServiceImpl implements SumoDataService {
             return value;
         }
     }
+
 }

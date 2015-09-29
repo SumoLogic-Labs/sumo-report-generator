@@ -1,4 +1,4 @@
-package com.sumologic.cs.omus.report.generator.impl;
+package com.sumologic.cs.omus.report.generator.excel;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;

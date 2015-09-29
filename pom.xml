@@ -20,6 +20,7 @@
     <properties>
         <apache.commons.io.version>2.4</apache.commons.io.version>
         <apache.commons.cli.version>1.3.1</apache.commons.cli.version>
+        <apache.commons.logging>1.2</apache.commons.logging>
         <cobertura.maven.plugin.version>2.7</cobertura.maven.plugin.version>
         <external.atlassian.jgitflow.version>1.0-m3</external.atlassian.jgitflow.version>
         <jackson.version>2.6.2</jackson.version>
@@ -35,10 +36,10 @@
         <poi.version>3.12</poi.version>
         <spring.version>4.2.1.RELEASE</spring.version>
         <sumo.java.client.version>2.0</sumo.java.client.version>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
         <sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true&amp;useConfigs=maxPerformance</sonar.jdbc.url>
+        <test.common.version>1.0.0</test.common.version>
     </properties>
 
     <dependencies>
@@ -49,6 +50,11 @@
             <version>${log4j.version}</version>
         </dependency>
         <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>${apache.commons.logging}</version>
+        </dependency>
+        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${apache.commons.io.version}</version>
@@ -57,6 +63,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- start test dependencies-->
@@ -71,6 +83,12 @@
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hamcrest</groupId>
+                    <artifactId>hamcrest-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

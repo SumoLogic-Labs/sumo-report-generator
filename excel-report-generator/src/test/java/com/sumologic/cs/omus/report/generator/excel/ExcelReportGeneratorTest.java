@@ -1,4 +1,4 @@
-package com.sumologic.cs.omus.report.generator.impl;
+package com.sumologic.cs.omus.report.generator.excel;
 
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
 import com.sumologic.cs.omus.report.generator.api.ReportGenerator;
@@ -31,7 +31,7 @@ public class ExcelReportGeneratorTest extends BaseExcelTest {
     public void testSuccess() throws Exception {
         ReportConfig reportConfig =
                 getReportConfigFromResource("/testReportConfig/TestJSON_testWorkbookWithSheetsCreation.json");
-        doNothing().when(workbookGenerator).generateWorkbookWithSheets(reportConfig);
+        doNothing().when(workbookGenerator).generateWorkbook(reportConfig);
         doNothing().when(workbookPopulator).populateWorkbookWithData(reportConfig);
         ReflectionTestUtils.setField(reportGenerator, "workbookPopulator", workbookPopulator);
         reportGenerator.generateReport(reportConfig);

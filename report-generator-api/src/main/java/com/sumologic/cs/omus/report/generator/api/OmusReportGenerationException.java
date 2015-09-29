@@ -5,9 +5,5 @@ public class OmusReportGenerationException extends Exception {
     public OmusReportGenerationException(String message) {
         super(message);
     }
-
-    public OmusReportGenerationException(Throwable cause) {
-        super(cause);
-    }
-
+    
 }

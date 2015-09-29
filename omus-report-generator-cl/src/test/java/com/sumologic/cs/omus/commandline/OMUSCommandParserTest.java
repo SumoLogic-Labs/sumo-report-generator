@@ -2,6 +2,7 @@ package com.sumologic.cs.omus.commandline;
 
 import com.sumologic.cs.omus.report.generator.api.ReportGenerator;
 import com.sumologic.cs.omus.test.BaseOMUSTest;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -14,6 +15,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.reset;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/spring/spring-test-context.xml")

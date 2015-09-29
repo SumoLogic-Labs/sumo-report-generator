@@ -1,4 +1,4 @@
-package com.sumologic.cs.omus.report.generator.impl;
+package com.sumologic.cs.omus.report.generator.excel;
 
 import com.sumologic.cs.omus.report.generator.api.OmusReportGenerationException;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
@@ -23,7 +23,7 @@ public class ExcelReportGenerator implements ReportGenerator {
     public void generateReport(ReportConfig reportConfig) throws OmusReportGenerationException {
             LOGGER.info("starting report generation");
             LOGGER.debug("using config: " + reportConfig);
-            workbookGenerator.generateWorkbookWithSheets(reportConfig);
+            workbookGenerator.generateWorkbook(reportConfig);
             workbookPopulator.populateWorkbookWithData(reportConfig);
             LOGGER.info("report successfully generated");
     }

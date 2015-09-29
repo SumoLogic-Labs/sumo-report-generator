@@ -1,4 +1,4 @@
-package com.sumologic.cs.omus.report.generator.impl;
+package com.sumologic.cs.omus.report.generator.excel;
 
 import com.sumologic.cs.omus.report.generator.api.OmusReportGenerationException;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;

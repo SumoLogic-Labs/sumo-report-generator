@@ -1,4 +1,4 @@
-package com.sumologic.cs.omus.report.generator.impl;
+package com.sumologic.cs.omus.report.generator.excel;
 
 import com.sumologic.cs.omus.report.generator.api.OmusReportGenerationException;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
@@ -19,16 +19,16 @@ public class ExcelWorkbookGenerator implements WorkbookGenerator {
     private static final Log LOGGER = LogFactory.getLog(ExcelWorkbookGenerator.class);
 
     @Override
-    public void generateWorkbookWithSheets(ReportConfig reportConfig) throws OmusReportGenerationException {
+    public void generateWorkbook(ReportConfig reportConfig) throws OmusReportGenerationException {
         try {
-            openAndGenerateWorkbook(reportConfig);
+            generateSheetsInWorkbook(reportConfig);
         } catch (IOException e) {
             LOGGER.error(e);
             throw new OmusReportGenerationException("unable to generate workbook!");
         }
     }
 
-    private void openAndGenerateWorkbook(ReportConfig reportConfig) throws IOException {
+    private void generateSheetsInWorkbook(ReportConfig reportConfig) throws IOException {
         LOGGER.debug("creating empty workbook with sheets");
         Workbook workbook = new XSSFWorkbook();
         FileOutputStream fileOut = new FileOutputStream(reportConfig.getDestinationFile());
