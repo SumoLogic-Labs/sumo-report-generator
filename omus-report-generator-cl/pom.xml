@@ -3,7 +3,7 @@
     <parent>
         <artifactId>omus-parent</artifactId>
         <groupId>com.sumologic.cs</groupId>
-        <version>1.0.1</version>
+        <version>1.0.1.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -102,6 +102,8 @@
                 <configuration>
                     <archive>
                         <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>com.sumologic.cs.omus.commandline.OMUSCommandLine</mainClass>
