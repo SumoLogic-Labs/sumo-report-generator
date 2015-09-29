@@ -48,7 +48,7 @@ public class OMUSCommandParser {
         } else if (commandLine.hasOption("c")) {
             invokeReportGenerator(commandLine);
         } else if (commandLine.hasOption("v")) {
-            System.out.println((getClass().getPackage().getImplementationVersion()));
+            System.out.println(getClass().getPackage().getImplementationVersion());
         } else {
             LOGGER.error("invalid arguments!");
             printHelp();
