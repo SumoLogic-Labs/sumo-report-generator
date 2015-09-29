@@ -59,7 +59,7 @@
             <groupId>com.sumologic.cs</groupId>
             <artifactId>test-common</artifactId>
             <type>test-jar</type>
-            <version>${project.versionn}</version>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-io</groupId>
