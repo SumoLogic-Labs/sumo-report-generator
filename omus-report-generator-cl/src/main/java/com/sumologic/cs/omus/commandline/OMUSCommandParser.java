@@ -32,17 +32,20 @@ public class OMUSCommandParser {
         } catch (OmusReportGenerationException e) {
             LOGGER.error("Unable to generate report!");
             LOGGER.error(e);
+        } catch (IOException e) {
+            LOGGER.error("Unable to open report config!");
+            LOGGER.error(e);
         }
     }
 
     private void parseCommandLine(String[] args, CommandLineParser parser)
-            throws OmusReportGenerationException, ParseException {
+            throws OmusReportGenerationException, ParseException, IOException {
         CommandLine commandLine = parser.parse(getOptions(), args);
         parseModeOptions(commandLine);
         parseOptions(commandLine);
     }
 
-    private void parseOptions(CommandLine commandLine) throws OmusReportGenerationException {
+    private void parseOptions(CommandLine commandLine) throws OmusReportGenerationException, IOException {
         if (commandLine.hasOption("h")) {
             printHelp();
         } else if (commandLine.hasOption("c")) {
@@ -55,16 +58,11 @@ public class OMUSCommandParser {
         }
     }
 
-    private void invokeReportGenerator(CommandLine commandLine) throws OmusReportGenerationException {
+    private void invokeReportGenerator(CommandLine commandLine) throws OmusReportGenerationException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         ReportConfig reportConfig;
         String reportConfigPath = commandLine.getOptionValue("c");
-        try {
-            reportConfig = mapper.readValue(new File(reportConfigPath), ReportConfig.class);
-        } catch (IOException e) {
-            LOGGER.error(e);
-            throw new OmusReportGenerationException("Unable to open report config " + reportConfigPath);
-        }
+        reportConfig = mapper.readValue(new File(reportConfigPath), ReportConfig.class);
         reportGenerator.generateReport(reportConfig);
     }
 
@@ -82,7 +80,7 @@ public class OMUSCommandParser {
         options.addOption( "d", "debug", false, "Enable debug logging." );
         options.addOption( "h", "help", false, "Prints help information." );
         options.addOption( "t", "trace", false, "Enable trace logging." );
-        options.addOption( "v", "version", false, "Get the version of the utility" );
+        options.addOption( "v", "version", false, "Get the version of the utility." );
         return options;
     }
 
