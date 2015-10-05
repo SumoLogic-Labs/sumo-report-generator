@@ -26,10 +26,10 @@ public class SumoDataServiceImpl implements SumoDataService {
 
     @Override
     public String executeSearchJob(SearchJob searchJob) {
+        SearchJob processedJob = processReplacementProperties(searchJob, propertyReplacementConfig);
         LOGGER.info("executing search job: " + searchJob.toString());
-        SearchJob processedSearchJob = processReplacementProperties(searchJob, propertyReplacementConfig);
         return client.createSearchJob(
-                processedSearchJob.getQuery(), processedSearchJob.getFrom(), processedSearchJob.getTo(), processedSearchJob.getTimezone());
+                processedJob.getQuery(), processedJob.getFrom(), processedJob.getTo(), processedJob.getTimezone());
     }
 
     @Override

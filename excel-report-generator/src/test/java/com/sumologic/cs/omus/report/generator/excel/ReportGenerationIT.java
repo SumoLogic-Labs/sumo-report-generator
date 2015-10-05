@@ -22,5 +22,4 @@ public class ReportGenerationIT extends BaseExcelTest {
         reportGenerator.generateReport(reportConfig);
     }
 
-
 }
