@@ -1,6 +1,5 @@
 package com.sumologic.cs.omus.report.generator.excel;
 
-import com.sumologic.cs.omus.report.generator.api.OmusReportGenerationException;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -22,7 +21,7 @@ public class ExcelWorkbookGeneratorTest extends BaseExcelTest {
 
     @Test
     public void testWorkbookWithSheetsCreation() throws Exception {
-        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/TestJSON_testWorkbookWithSheetsCreation.json");
+        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/testWorkbookWithSheetsCreation.json");
         workbookGenerator.generateWorkbook(reportConfig);
         File file = new File(reportConfig.getDestinationFile());
         Assert.assertTrue(file.exists());
@@ -32,7 +31,7 @@ public class ExcelWorkbookGeneratorTest extends BaseExcelTest {
         assertEquals("sheet2", createdWorkbook.getSheetName(1));
     }
 
-    @Test(expected = OmusReportGenerationException.class)
+    @Test(expected = IOException.class)
     public void testWorkbookWithSheetsCreationException() throws Exception {
         ReportConfig reportConfig = mock(ReportConfig.class);
         doThrow(IOException.class).when(reportConfig).getDestinationFile();
@@ -41,7 +40,7 @@ public class ExcelWorkbookGeneratorTest extends BaseExcelTest {
 
     @Test
     public void testWorkbookCreationWithInvalidSheetName() throws Exception {
-        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/TestJSON_testWorkbookCreationWithInvalidSheetName.json");
+        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/testWorkbookCreationWithInvalidSheetName.json");
         workbookGenerator.generateWorkbook(reportConfig);
         File file = new File(reportConfig.getDestinationFile());
         Assert.assertTrue(file.exists());

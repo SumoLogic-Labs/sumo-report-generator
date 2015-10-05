@@ -6,7 +6,6 @@ import com.sumologic.client.searchjob.model.GetSearchJobStatusResponse;
 import com.sumologic.cs.omus.report.generator.api.PropertyReplacementConfig;
 import com.sumologic.cs.omus.report.generator.api.SearchJob;
 import com.sumologic.cs.omus.test.BaseOMUSTest;
-import org.apache.commons.logging.Log;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,9 +31,6 @@ public class SumoDataServiceImplTest extends BaseOMUSTest {
     @Mock
     private PropertyReplacementConfig propertyReplacementConfig;
 
-    @Mock
-    private Log LOGGER;
-
     @Before
     public void setUp() {
         super.setUp();
@@ -43,18 +39,7 @@ public class SumoDataServiceImplTest extends BaseOMUSTest {
 
     @After
     public void tearDown() {
-        Mockito.reset(client, propertyReplacementConfig, LOGGER);
-    }
-
-    @Test
-    public void testExecuteSearchJob() {
-        when(client.createSearchJob(anyString(), anyString(), anyString(), anyString())).thenReturn("1234");
-        SearchJob searchJob = new SearchJob();
-        searchJob.setQuery("");
-        searchJob.setFrom("");
-        searchJob.setTo("");
-        searchJob.setTimezone("");
-        assertEquals("1234", sumoDataService.executeSearchJob(searchJob));
+        Mockito.reset(client, propertyReplacementConfig);
     }
 
     @Test
@@ -104,7 +89,7 @@ public class SumoDataServiceImplTest extends BaseOMUSTest {
     }
 
     @Test
-    public void testNoReplacementConfig() {;
+    public void testNoReplacementConfig() {
         ReflectionTestUtils.setField(sumoDataService, "propertyReplacementConfig", null);
         when(client.createSearchJob(anyString(), anyString(), anyString(), anyString())).thenReturn("1234");
         SearchJob searchJob = new SearchJob();

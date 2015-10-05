@@ -1,0 +1,26 @@
+{
+  "username" : "suZUtIzNAKTC9J",
+  "password" : "d3WaKGYuN9U9Mx4606xsJ7qlwuuQvtyaKAEqYrpjesOvz98BRxrObTIDviqiOBQc",
+  "url" : "https://long-api.sumologic.net",
+  "destinationFile" : "/Users/frankreno/Desktop/workbook.xlsx",
+  "reportSheets" : [
+    {
+      "sheetName" : "ingest",
+      "searchJob" : {
+        "query" : "_view=cs_volumes | name as accountName | timeslice by 1d | sum(size_in_bytes) as bytes by org_id, accountname,_timeslice | formatDate(fromMillis(_timeslice),\"MM/dd/yyyy\") as date | bytes/1024/1024 as size_mb | format(\"%.2f\", size_mb/1024) as size_gb | fields org_id, accountname, date, size_gb",
+        "from": "2015-09-20T00:00:00",
+        "to": "2015-09-20T23:59:59",
+        "timezone": "PST"
+      }
+    },
+    {
+      "sheetName" : "ingest*",
+      "searchJob" : {
+        "query" : "_view=cs_volumes | name as accountName | timeslice by 1d | sum(size_in_bytes) as bytes by org_id, accountname,_timeslice | formatDate(fromMillis(_timeslice),\"MM/dd/yyyy\") as date | bytes/1024/1024 as size_mb | format(\"%.2f\", size_mb/1024) as size_gb | fields org_id, accountname, date, size_gb",
+        "from": "2015-09-20T00:00:00",
+        "to": "2015-09-20T23:59:59",
+        "timezone": "PST"
+      }
+    }
+  ]
+}

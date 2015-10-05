@@ -25,18 +25,9 @@ public class ExcelWorksheetPopulator implements WorksheetPopulator {
         String jobId = sumoDataService.executeSearchJob(reportSheet.getSearchJob());
         GetSearchJobStatusResponse statusResponse = sumoDataService.pollSearchJobUntilComplete(jobId);
         LOGGER.info("found a total of " + statusResponse.getRecordCount() + " records");
-        if (statusResponse.getRecordCount() <= MAX_OFFSET) {
-            populateSheetWithData(jobId, workbookSheet, sumoDataService);
-        } else {
-            iterateAndPopulate(sumoDataService, jobId, statusResponse, workbookSheet);
-        }
+        iterateAndPopulate(sumoDataService, jobId, statusResponse, workbookSheet);
     }
 
-    private void populateSheetWithData(String jobId, Sheet workbookSheet, SumoDataService sumoDataService) {
-        GetRecordsForSearchJobResponse recordsResponse = sumoDataService.getRecordsResponse(jobId, DEFAULT_START, MAX_OFFSET);
-        populateColumnHeaders(workbookSheet, recordsResponse);
-        populateRecords(workbookSheet, recordsResponse);
-    }
 
     private void iterateAndPopulate(SumoDataService sumoDataService, String jobId, GetSearchJobStatusResponse statusResponse, Sheet workbookSheet) {
         GetRecordsForSearchJobResponse recordsResponse = sumoDataService.getRecordsResponse(jobId, DEFAULT_START, MAX_OFFSET);
@@ -57,21 +48,6 @@ public class ExcelWorksheetPopulator implements WorksheetPopulator {
             LOGGER.trace("adding column header " + field.getName());
             row.createCell(colIndex).setCellValue(field.getName());
             colIndex++;
-        }
-    }
-
-    private void populateRecords(Sheet workbookSheet, GetRecordsForSearchJobResponse recordsResponse) {
-        int rowIndex=1;
-        for (SearchJobRecord record : recordsResponse.getRecords()) {
-            LOGGER.trace("creating row " + rowIndex);
-            Row row = workbookSheet.createRow(rowIndex);
-            int colIndex = 0;
-            for (SearchJobField field : recordsResponse.getFields()) {
-                LOGGER.trace("creating cell " + colIndex + " with value " + record.getMap().get(field.getName()));
-                row.createCell(colIndex).setCellValue(record.getMap().get(field.getName()));
-                colIndex++;
-            }
-            rowIndex++;
         }
     }
 
