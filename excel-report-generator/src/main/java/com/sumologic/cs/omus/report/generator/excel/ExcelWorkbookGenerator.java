@@ -1,6 +1,5 @@
 package com.sumologic.cs.omus.report.generator.excel;
 
-import com.sumologic.cs.omus.report.generator.api.OmusReportGenerationException;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
 import com.sumologic.cs.omus.report.generator.api.ReportSheet;
 import org.apache.commons.logging.Log;
@@ -19,27 +18,31 @@ public class ExcelWorkbookGenerator implements WorkbookGenerator {
     private static final Log LOGGER = LogFactory.getLog(ExcelWorkbookGenerator.class);
 
     @Override
-    public void generateWorkbook(ReportConfig reportConfig) throws OmusReportGenerationException {
-        try {
-            generateSheetsInWorkbook(reportConfig);
-        } catch (IOException e) {
-            LOGGER.error(e);
-            throw new OmusReportGenerationException("unable to generate workbook!");
-        }
+    public Workbook generateWorkbook(ReportConfig reportConfig) throws IOException {
+        return generateWorkbookWithSheets(reportConfig);
     }
 
-    private void generateSheetsInWorkbook(ReportConfig reportConfig) throws IOException {
+    private Workbook generateWorkbookWithSheets(ReportConfig reportConfig) throws IOException {
         LOGGER.debug("creating empty workbook with sheets");
         Workbook workbook = new XSSFWorkbook();
         FileOutputStream fileOut = new FileOutputStream(reportConfig.getDestinationFile());
-        for (ReportSheet sheet : reportConfig.getReportSheets()) {
-            String safeName = getSafeSheetName(sheet.getSheetName());
-            LOGGER.debug("creating sheet " + safeName);
-            workbook.createSheet(safeName);
-        }
+        generateSheets(reportConfig, workbook);
         workbook.write(fileOut);
         fileOut.close();
         LOGGER.debug("workbook created");
+        return workbook;
+    }
+
+    private void generateSheets(ReportConfig reportConfig, Workbook workbook) {
+        for (ReportSheet sheet : reportConfig.getReportSheets()) {
+            generateSheet(workbook, sheet);
+        }
+    }
+
+    private void generateSheet(Workbook workbook, ReportSheet sheet) {
+        String safeName = getSafeSheetName(sheet.getSheetName());
+        LOGGER.debug("creating sheet " + safeName);
+        workbook.createSheet(safeName);
     }
 
     private String getSafeSheetName(String sheetName) {

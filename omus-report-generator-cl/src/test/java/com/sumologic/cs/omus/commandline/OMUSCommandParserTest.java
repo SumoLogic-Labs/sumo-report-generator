@@ -2,8 +2,6 @@ package com.sumologic.cs.omus.commandline;
 
 import com.sumologic.cs.omus.report.generator.api.ReportGenerator;
 import com.sumologic.cs.omus.test.BaseOMUSTest;
-import org.apache.commons.logging.Log;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -15,10 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/spring/spring-test-context.xml")
@@ -53,7 +48,7 @@ public class OMUSCommandParserTest extends BaseOMUSTest {
     public void testValidConfig() throws Exception {
         ReflectionTestUtils.setField(parser, "reportGenerator", reportGenerator);
         doNothing().when(reportGenerator).generateReport(any());
-        copyResourceToFolder("/testReportConfig/TestJSON_testParserSampleConfig.json", tempFolderPath + "/config.json");
+        copyResourceToFolder("/testReportConfig/testParserSampleConfig.json", tempFolderPath + "/config.json");
         parser.parse(new String[]{"-c", tempFolderPath + "/config.json"});
     }
 

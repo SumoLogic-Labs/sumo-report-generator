@@ -1,22 +1,18 @@
 package com.sumologic.cs.omus.report.generator.excel;
 
-import com.sumologic.cs.omus.report.generator.api.OmusReportGenerationException;
 import com.sumologic.cs.omus.report.generator.api.ReportConfig;
-import junit.framework.Assert;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
+
 
 public class ExcelWorkbookPopulatorTest extends BaseExcelTest {
 
@@ -30,27 +26,21 @@ public class ExcelWorkbookPopulatorTest extends BaseExcelTest {
     @Autowired
     private WorksheetPopulator worksheetPopulator;
 
-    @Test (expected = OmusReportGenerationException.class)
+    @Test (expected = IOException.class)
     public void testIOException() throws Exception {
         ReportConfig reportConfig = mock(ReportConfig.class);
+        Workbook workbook = new XSSFWorkbook();
         doThrow(IOException.class).when(reportConfig).getDestinationFile();
-        workbookPopulator.populateWorkbookWithData(reportConfig);
-    }
-
-    @Test (expected = OmusReportGenerationException.class)
-    public void testInvalidFormatException() throws Exception {
-        ReportConfig reportConfig = mock(ReportConfig.class);
-        doThrow(InvalidFormatException.class).when(reportConfig).getDestinationFile();
-        workbookPopulator.populateWorkbookWithData(reportConfig);
+        workbookPopulator.populateWorkbookWithData(reportConfig, workbook);
     }
 
     @Test
     public void testWorkbookPopulation() throws Exception {
-        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/TestJSON_testWorkbookPopulation.json");
+        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/testWorkbookPopulation.json");
         ReflectionTestUtils.setField(workbookPopulator, "worksheetPopulator", worksheetPopulator);
         doNothing().when(worksheetPopulator).populateSheetWithData(any(), any(), any());
-        workbookGenerator.generateWorkbook(reportConfig);
-        workbookPopulator.populateWorkbookWithData(reportConfig);
+        Workbook workbook = workbookGenerator.generateWorkbook(reportConfig);
+        workbookPopulator.populateWorkbookWithData(reportConfig, workbook);
     }
 
 }
