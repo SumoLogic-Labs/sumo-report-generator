@@ -9,4 +9,4 @@
 
 ### MAVEN ###
 target/
-excel-report-generator/src/test/resources/testReportConfig/TestJSON_IT.json
+excel-report-generator/src/test/resources/testReportConfig/IT.json
