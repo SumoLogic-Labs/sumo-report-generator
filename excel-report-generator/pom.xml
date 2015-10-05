@@ -33,11 +33,6 @@
             <version>${poi.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.sumologic.cs</groupId>
-            <artifactId>report-generator-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
