@@ -1,15 +1,12 @@
-# Created by .ignore support plugin (hsz.mobi)
-### Example user template template
-### Example user template
-
-# IntelliJ project files
+### INTELLIJ ###
 .idea
 *.iml
 *.class
 
-# Mobile Tools for Java (J2ME)
-# Package Files #
+### JAVA ###
 *.jar
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-### Maven template
+
+
+### MAVEN ###
 target/
+excel-report-generator/src/test/resources/testReportConfig/TestJSON_IT.json
