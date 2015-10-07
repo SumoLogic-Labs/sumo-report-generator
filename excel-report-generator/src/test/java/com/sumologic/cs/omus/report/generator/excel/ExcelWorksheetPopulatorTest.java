@@ -6,6 +6,7 @@ import com.sumologic.client.searchjob.model.SearchJobField;
 import com.sumologic.client.searchjob.model.SearchJobRecord;
 import com.sumologic.cs.omus.report.generator.api.ReportSheet;
 import com.sumologic.cs.omus.service.SumoDataService;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -51,6 +52,28 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
 
     @Test
     public void testWithData() throws Exception {
+        ReflectionTestUtils.setField(worksheetPopulator, "MAX_OFFSET", 10000);
+        ReportSheet reportSheet = new ReportSheet();
+        reportSheet.setSheetName("ingest");
+        when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
+        GetSearchJobStatusResponse searchJobStatusResponse = new GetSearchJobStatusResponse();
+        searchJobStatusResponse.setRecordCount(2);
+        when(sumoDataService.pollSearchJobUntilComplete("1234")).thenReturn(searchJobStatusResponse);
+        GetRecordsForSearchJobResponse recordsResponse = getSampleRecordsResponse();
+        when(sumoDataService.getRecordsResponse("1234", 0, 10000)).thenReturn(recordsResponse);
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("ingest");
+        Row colRow = sheet.createRow(0);
+        colRow.createCell(0).setCellValue("column1");
+        colRow.createCell(1).setCellValue("column2");
+        worksheetPopulator.populateSheetWithData(sheet, reportSheet, sumoDataService);
+        assertEquals(1, workbook.getNumberOfSheets());
+        assertEquals("ingest", sheet.getSheetName());
+        assertEquals(3, sheet.getPhysicalNumberOfRows());
+    }
+
+    @Test
+    public void testColumnsAlreadyExistWithData() throws Exception {
         ReflectionTestUtils.setField(worksheetPopulator, "MAX_OFFSET", 10000);
         ReportSheet reportSheet = new ReportSheet();
         reportSheet.setSheetName("ingest");

@@ -32,7 +32,7 @@ public class ExcelWorksheetPopulator implements WorksheetPopulator {
     private void iterateAndPopulate(SumoDataService sumoDataService, String jobId, GetSearchJobStatusResponse statusResponse, Sheet workbookSheet) {
         GetRecordsForSearchJobResponse recordsResponse = sumoDataService.getRecordsResponse(jobId, DEFAULT_START, MAX_OFFSET);
         populateColumnHeaders(workbookSheet, recordsResponse);
-        int startRecordIndex=1;
+        int startRecordIndex = 0;
         while (startRecordIndex < statusResponse.getRecordCount()) {
             populateRecords(startRecordIndex, workbookSheet, recordsResponse);
             startRecordIndex += recordsResponse.getRecords().size();
@@ -41,29 +41,32 @@ public class ExcelWorksheetPopulator implements WorksheetPopulator {
     }
 
     private void populateColumnHeaders(Sheet workbookSheet, GetRecordsForSearchJobResponse recordsResponse) {
-        int rowIndex = 0;
-        int colIndex = 0;
-        Row row = workbookSheet.createRow(rowIndex);
-        for (SearchJobField field : recordsResponse.getFields()) {
-            LOGGER.trace("adding column header " + field.getName());
-            row.createCell(colIndex).setCellValue(field.getName());
-            colIndex++;
+        if (workbookSheet.getPhysicalNumberOfRows() == 0) {
+            int rowIndex = 0;
+            int colIndex = 0;
+            Row row = workbookSheet.createRow(rowIndex);
+            for (SearchJobField field : recordsResponse.getFields()) {
+                LOGGER.trace("adding column header " + field.getName());
+                row.createCell(colIndex).setCellValue(field.getName());
+                colIndex++;
+            }
         }
     }
 
     private void populateRecords(int startRowIndex, Sheet workbookSheet, GetRecordsForSearchJobResponse recordsResponse) {
-        int rowIndex = startRowIndex;
+        int rowIndex = startRowIndex+1;
         for (SearchJobRecord record : recordsResponse.getRecords()) {
             LOGGER.trace("creating row " + rowIndex);
             Row row = workbookSheet.createRow(rowIndex);
-            int colIndex = 0;
             for (SearchJobField field : recordsResponse.getFields()) {
+                int colIndex = ExcelUtils.lookupCellIndexByColumnName(field.getName(), workbookSheet);
                 LOGGER.trace("creating cell " + colIndex + " with value " + record.getMap().get(field.getName()));
                 row.createCell(colIndex).setCellValue(record.getMap().get(field.getName()));
-                colIndex++;
             }
             rowIndex++;
         }
     }
+
+
 
 }
