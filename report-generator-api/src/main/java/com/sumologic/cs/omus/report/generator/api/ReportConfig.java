@@ -8,6 +8,7 @@ public class ReportConfig {
     private String password;
     private String url;
     private String destinationFile;
+    private String templateFile;
     private PropertyReplacementConfig propertyReplacementConfig;
     private List<ReportSheet> reportSheets;
 
@@ -43,6 +44,14 @@ public class ReportConfig {
         this.destinationFile = destinationFile;
     }
 
+    public String getTemplateFile() {
+        return templateFile;
+    }
+
+    public void setTemplateFile(String templateFile) {
+        this.templateFile = templateFile;
+    }
+
     public List<ReportSheet> getReportSheets() {
         return reportSheets;
     }
@@ -65,6 +74,7 @@ public class ReportConfig {
                 "username='" + username + '\'' +
                 ", url='" + url + '\'' +
                 ", destinationFile='" + destinationFile + '\'' +
+                ", templateFile='" + templateFile + '\'' +
                 ", propertyReplacementConfig=" + propertyReplacementConfig +
                 ", reportSheets=" + reportSheets +
                 '}';
