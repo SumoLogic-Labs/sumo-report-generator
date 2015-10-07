@@ -31,9 +31,22 @@ public class ExcelReportGeneratorTest extends BaseExcelTest {
     }
 
     @Test
-    public void testSuccess() throws Exception {
+    public void testSuccessWithoutTemplate() throws Exception {
         ReportConfig reportConfig =
                 getReportConfigFromResource("/testReportConfig/testWorkbookWithSheetsCreation.json");
+        Workbook workbook = new XSSFWorkbook();
+        when(workbookGenerator.generateWorkbook(reportConfig)).thenReturn(workbook);
+        doNothing().when(workbookPopulator).populateWorkbookWithData(reportConfig, workbook);
+        ReflectionTestUtils.setField(reportGenerator, "workbookPopulator", workbookPopulator);
+        reportGenerator.generateReport(reportConfig);
+    }
+
+    @Test
+    public void testSuccessWithTemplate() throws Exception {
+        copyResourceToFolder("/template.xlsx", tempFolderPath + "/template.xlsx");
+        ReportConfig reportConfig =
+                getReportConfigFromResource("/testReportConfig/testWorkbookWithSheetsCreation.json");
+        reportConfig.setTemplateFile(tempFolderPath + "/template.xlsx");
         Workbook workbook = new XSSFWorkbook();
         when(workbookGenerator.generateWorkbook(reportConfig)).thenReturn(workbook);
         doNothing().when(workbookPopulator).populateWorkbookWithData(reportConfig, workbook);
