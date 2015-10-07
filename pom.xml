@@ -22,7 +22,7 @@
         <apache.commons.cli.version>1.3.1</apache.commons.cli.version>
         <apache.commons.logging>1.2</apache.commons.logging>
         <cobertura.maven.plugin.version>2.7</cobertura.maven.plugin.version>
-        <external.atlassian.jgitflow.version>1.0-m3</external.atlassian.jgitflow.version>
+        <external.atlassian.jgitflow.version>1.0-m5.1</external.atlassian.jgitflow.version>
         <jackson.version>2.6.2</jackson.version>
         <jacoco.verion>0.7.4.201502262128</jacoco.verion>
         <java.version>1.8</java.version>
