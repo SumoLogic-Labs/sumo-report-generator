@@ -1,13 +1,9 @@
 ### INTELLIJ ###
 .idea
 *.iml
-*.class
-
-### JAVA ###
-*.jar
 
 
 ### MAVEN ###
 target/
-excel-report-generator/src/test/resources/testReportConfig/IT.json
-excel-report-generator/src/test/resources/testReportConfig/ITTemplate.json
+src/test/resources/testReportConfig/IT.json
+src/test/resources/testReportConfig/ITTemplate.json
