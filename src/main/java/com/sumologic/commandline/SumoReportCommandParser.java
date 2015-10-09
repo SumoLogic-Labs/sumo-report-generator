@@ -86,7 +86,7 @@ public class SumoReportCommandParser {
 
     private static void printHelp() {
         HelpFormatter helpFormatter = new HelpFormatter();
-        helpFormatter.printHelp("OMUS Command Line", getOptions());
+        helpFormatter.printHelp("SumoLogic Report Generator", getOptions());
     }
 
 }
