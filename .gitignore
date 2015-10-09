@@ -5,5 +5,3 @@
 
 ### MAVEN ###
 target/
-src/test/resources/testReportConfig/IT.json
-src/test/resources/testReportConfig/ITTemplate.json
