@@ -87,7 +87,7 @@ public class ReportGenerationIT extends BaseExcelTest {
         ReflectionTestUtils.setField(worksheetPopulator, "MAX_OFFSET", 10000);
         ReflectionTestUtils.setField(workbookPopulator, "worksheetPopulator", worksheetPopulator);
         ReflectionTestUtils.setField(reportGenerator, "workbookPopulator", workbookPopulator);
-        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/ITTemplate.json");
+        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/IT.json");
         reportConfig.setTemplateFile(tempFolderPath + "template.xlsx");
         copyResourceToFolder("/template.xlsx", tempFolderPath + "template.xlsx");
         reportGenerator.generateReport(reportConfig);
