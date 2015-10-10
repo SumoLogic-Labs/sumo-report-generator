@@ -12,6 +12,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.FileInputStream;
 
+import static org.junit.Assert.assertEquals;
+
 public class ReportGenerationIT extends BaseExcelTest {
 
     @Autowired
