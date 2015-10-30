@@ -276,6 +276,7 @@
                 <version>${external.atlassian.jgitflow.version}</version>
                 <configuration>
                     <noDeploy>true</noDeploy>
+                    <allowUntracked>true</allowUntracked>
                 </configuration>
             </plugin>
 
