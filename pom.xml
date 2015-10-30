@@ -5,8 +5,30 @@
     <groupId>com.sumologic</groupId>
     <artifactId>sumo-report-generator</artifactId>
     <version>1.1.1-SNAPSHOT</version>
-    <name>Sumo Logic Report Generator</name>
 
+    <name>Sumo Logic Report Generator</name>
+    <description>Sumologic Report Generator</description>
+    <url>https://github.com/SumoLogic/sumo-report-generator/wiki</url>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>freno</id>
+            <name>Frank Reno</name>
+            <email>freno@sumologic.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/SumoLogic/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:git@github.com::SumoLogic/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/SumoLogic/sumo-report-generator</url>
+    </scm>
 
     <properties>
         <apache.commons.io.version>2.4</apache.commons.io.version>
@@ -30,7 +52,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.2.1.RELEASE</spring.version>
         <sumo.java.client.version>2.0</sumo.java.client.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- start sonar properties-->
         <sonar.java.source>1.8</sonar.java.source>
         <sonar.java.target>1.8</sonar.java.target>
