@@ -115,8 +115,10 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         List<SearchJobField> fields = new ArrayList<>();
         SearchJobField field1 = new SearchJobField();
         field1.setName("column1");
+        field1.setFieldType("string");
         SearchJobField field2 = new SearchJobField();
         field2.setName("column2");
+        field2.setFieldType("string");
         fields.add(field1);
         fields.add(field2);
         recordsResponse.setFields(fields);
