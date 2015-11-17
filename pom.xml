@@ -4,7 +4,7 @@
 
     <groupId>com.sumologic</groupId>
     <artifactId>sumo-report-generator</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.2.0</version>
 
     <name>Sumo Logic Report Generator</name>
     <description>Sumologic Report Generator</description>
