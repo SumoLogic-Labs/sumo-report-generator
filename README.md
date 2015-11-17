@@ -3,14 +3,3 @@ This tool allows a user to execute multiple searches, and compile the data in a 
 
 ##Usage
 See the wiki for detailed usage.
-
-##Installation
-The library can be added to your project using Maven Central just by adding the following dependency to a POM file:
-
-```
-<dependency>
-  <groupId>com.sumologic</groupId>
-  <artifactId>sumo-report-generator</artifactId>
-  <version>1.1.1</version>
-</dependency>
-```

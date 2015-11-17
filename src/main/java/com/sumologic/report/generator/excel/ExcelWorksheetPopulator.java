@@ -23,6 +23,7 @@ public class ExcelWorksheetPopulator implements WorksheetPopulator {
     @Override
     public void populateSheetWithData(Sheet workbookSheet, ReportSheet reportSheet, SumoDataService sumoDataService) {
         String jobId = sumoDataService.executeSearchJob(reportSheet.getSearchJob());
+        LOGGER.info("got back search job id " + jobId);
         GetSearchJobStatusResponse statusResponse = sumoDataService.pollSearchJobUntilComplete(jobId);
         LOGGER.info("found a total of " + statusResponse.getRecordCount() + " records");
         iterateAndPopulate(sumoDataService, jobId, statusResponse, workbookSheet);

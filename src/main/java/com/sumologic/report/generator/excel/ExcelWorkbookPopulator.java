@@ -35,16 +35,16 @@ public class ExcelWorkbookPopulator implements WorkbookPopulator {
     private void openWorkbookAndProcessSheets(ReportConfig reportConfig, Workbook workbook) throws IOException {
         LOGGER.debug("populating workbook");
         processSheets(reportConfig, workbook);
-        FileOutputStream fileOut = new FileOutputStream(reportConfig.getDestinationFile());
-        workbook.write(fileOut);
-        fileOut.close();
         LOGGER.debug("workbook populated");
     }
 
-    private void processSheets(ReportConfig reportConfig, Workbook workbook) throws MalformedURLException {
+    private void processSheets(ReportConfig reportConfig, Workbook workbook) throws IOException {
         SumoDataService sumoDataService = sumoDataServiceFactory.getSumoDataService(reportConfig);
         for (ReportSheet reportSheet : reportConfig.getReportSheets()) {
             processSheet(workbook, sumoDataService, reportSheet);
+            FileOutputStream fileOut = new FileOutputStream(reportConfig.getDestinationFile());
+            workbook.write(fileOut);
+            fileOut.close();
         }
     }
 
