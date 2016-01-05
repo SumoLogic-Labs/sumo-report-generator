@@ -5,6 +5,7 @@ import com.sumologic.client.searchjob.model.GetSearchJobStatusResponse;
 import com.sumologic.client.searchjob.model.SearchJobField;
 import com.sumologic.client.searchjob.model.SearchJobRecord;
 import com.sumologic.report.config.ReportSheet;
+import com.sumologic.report.config.WorksheetConfig;
 import com.sumologic.service.SumoDataService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,23 +23,30 @@ public class ExcelWorksheetPopulator implements WorksheetPopulator {
     private static int MAX_OFFSET = 10000;
 
     @Override
-    public void populateSheetWithData(Sheet workbookSheet, ReportSheet reportSheet, SumoDataService sumoDataService) {
-        String jobId = sumoDataService.executeSearchJob(reportSheet.getSearchJob());
+    public void populateSheetWithData(WorksheetConfig worksheetConfig) {
+        String jobId = worksheetConfig.getSumoDataService().executeSearchJob(worksheetConfig.getReportSheet().getSearchJob());
         LOGGER.info("got back search job id " + jobId);
-        GetSearchJobStatusResponse statusResponse = sumoDataService.pollSearchJobUntilComplete(jobId);
+        GetSearchJobStatusResponse statusResponse = worksheetConfig.getSumoDataService().pollSearchJobUntilComplete(jobId);
         LOGGER.info("found a total of " + statusResponse.getRecordCount() + " records");
-        iterateAndPopulate(sumoDataService, jobId, statusResponse, workbookSheet);
+        iterateAndPopulate(jobId, statusResponse, worksheetConfig);
     }
 
 
-    private void iterateAndPopulate(SumoDataService sumoDataService, String jobId, GetSearchJobStatusResponse statusResponse, Sheet workbookSheet) {
+    private void iterateAndPopulate(String jobId, GetSearchJobStatusResponse statusResponse, WorksheetConfig worksheetConfig) {
+        SumoDataService sumoDataService = worksheetConfig.getSumoDataService();
+        Sheet workbookSheet = worksheetConfig.getWorkbookSheet();
         GetRecordsForSearchJobResponse recordsResponse = sumoDataService.getRecordsResponse(jobId, DEFAULT_START, MAX_OFFSET);
         populateColumnHeaders(workbookSheet, recordsResponse);
-        int startRecordIndex = 0;
-        while (startRecordIndex < statusResponse.getRecordCount()) {
-            populateRecords(startRecordIndex, workbookSheet, recordsResponse);
-            startRecordIndex += recordsResponse.getRecords().size();
-            recordsResponse = sumoDataService.getRecordsResponse(jobId, startRecordIndex, MAX_OFFSET);
+        int recordIterationIndex = 0;
+        int recordPopulationIndex = 0;
+        if (worksheetConfig.getReportConfig().isAppendToDestination()) {
+            recordPopulationIndex = workbookSheet.getPhysicalNumberOfRows() - 1;
+        }
+        while (recordIterationIndex < statusResponse.getRecordCount()) {
+            populateRecords(recordPopulationIndex, workbookSheet, recordsResponse);
+            recordIterationIndex += recordsResponse.getRecords().size();
+            recordsResponse = sumoDataService.getRecordsResponse(jobId, recordIterationIndex, MAX_OFFSET);
+            recordPopulationIndex = workbookSheet.getPhysicalNumberOfRows() - 1;
         }
     }
 

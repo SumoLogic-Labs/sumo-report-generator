@@ -1,6 +1,7 @@
 package com.sumologic.report.generator.excel;
 
 import com.sumologic.report.config.ReportConfig;
+import com.sumologic.report.generator.ReportGenerationException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
@@ -31,7 +32,7 @@ public class ExcelWorkbookGeneratorTest extends BaseExcelTest {
         assertEquals("sheet2", createdWorkbook.getSheetName(1));
     }
 
-    @Test(expected = IOException.class)
+    @Test(expected = ReportGenerationException.class)
     public void testWorkbookWithSheetsCreationException() throws Exception {
         ReportConfig reportConfig = mock(ReportConfig.class);
         doThrow(IOException.class).when(reportConfig).getDestinationFile();

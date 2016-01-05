@@ -1,11 +1,9 @@
 package com.sumologic.report.generator.excel;
 
-import com.sumologic.report.config.ReportSheet;
-import com.sumologic.service.SumoDataService;
-import org.apache.poi.ss.usermodel.Sheet;
+import com.sumologic.report.config.WorksheetConfig;
 
 public interface WorksheetPopulator {
 
-    void populateSheetWithData(Sheet workbookSheet, ReportSheet reportSheet, SumoDataService sumoDataService);
+    void populateSheetWithData(WorksheetConfig worksheetConfig);
 
 }

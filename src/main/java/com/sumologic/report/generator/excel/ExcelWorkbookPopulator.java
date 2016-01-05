@@ -2,6 +2,8 @@ package com.sumologic.report.generator.excel;
 
 import com.sumologic.report.config.ReportConfig;
 import com.sumologic.report.config.ReportSheet;
+import com.sumologic.report.config.WorksheetConfig;
+import com.sumologic.report.generator.ReportGenerationException;
 import com.sumologic.service.SumoDataService;
 import com.sumologic.service.SumoDataServiceFactory;
 import org.apache.commons.logging.Log;
@@ -28,8 +30,13 @@ public class ExcelWorkbookPopulator implements WorkbookPopulator {
     private WorksheetPopulator worksheetPopulator;
 
     @Override
-    public void populateWorkbookWithData(ReportConfig reportConfig, Workbook workbook) throws IOException {
-        openWorkbookAndProcessSheets(reportConfig, workbook);
+    public void populateWorkbookWithData(ReportConfig reportConfig, Workbook workbook) throws ReportGenerationException {
+        try {
+            openWorkbookAndProcessSheets(reportConfig, workbook);
+        } catch (IOException e) {
+            LOGGER.error("unable to generate workbook!");
+            throw  new ReportGenerationException(e);
+        }
     }
 
     private void openWorkbookAndProcessSheets(ReportConfig reportConfig, Workbook workbook) throws IOException {
@@ -41,18 +48,19 @@ public class ExcelWorkbookPopulator implements WorkbookPopulator {
     private void processSheets(ReportConfig reportConfig, Workbook workbook) throws IOException {
         SumoDataService sumoDataService = sumoDataServiceFactory.getSumoDataService(reportConfig);
         for (ReportSheet reportSheet : reportConfig.getReportSheets()) {
-            processSheet(workbook, sumoDataService, reportSheet);
+            WorksheetConfig config = new WorksheetConfig();
+            config.setReportConfig(reportConfig);
+            config.setReportSheet(reportSheet);
+            config.setSumoDataService(sumoDataService);
+            String worksheetName = WorkbookUtil.createSafeSheetName(reportSheet.getSheetName());
+            Sheet workbookSheet = workbook.getSheet(worksheetName);
+            config.setWorkbookSheet(workbookSheet);
+            LOGGER.info("populating sheet " + reportSheet.getSheetName());
+            worksheetPopulator.populateSheetWithData(config);
             FileOutputStream fileOut = new FileOutputStream(reportConfig.getDestinationFile());
             workbook.write(fileOut);
             fileOut.close();
         }
-    }
-
-    private void processSheet(Workbook workbook, SumoDataService sumoDataService, ReportSheet reportSheet) {
-        LOGGER.info("populating sheet " + reportSheet.getSheetName());
-        String worksheetName = WorkbookUtil.createSafeSheetName(reportSheet.getSheetName());
-        Sheet workbookSheet = workbook.getSheet(worksheetName);
-        worksheetPopulator.populateSheetWithData(workbookSheet, reportSheet, sumoDataService);
     }
 
 }

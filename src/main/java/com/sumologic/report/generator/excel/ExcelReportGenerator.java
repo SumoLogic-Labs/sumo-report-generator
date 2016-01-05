@@ -36,15 +36,18 @@ public class ExcelReportGenerator implements ReportGenerator {
             Workbook workbook = getWorkbook(reportConfig);
             workbookPopulator.populateWorkbookWithData(reportConfig, workbook);
             LOGGER.info("report successfully generated");
-        } catch (IOException e) {
+        } catch (IOException | InvalidFormatException e ) {
+            LOGGER.error("unabe to generate report!");
             throw new ReportGenerationException(e);
         }
     }
 
-    private Workbook getWorkbook(ReportConfig reportConfig) throws IOException, ReportGenerationException {
+    private Workbook getWorkbook(ReportConfig reportConfig) throws IOException, ReportGenerationException, InvalidFormatException {
         Workbook workbook;
         if (reportConfig.getTemplateFile() == null) {
             workbook = workbookGenerator.generateWorkbook(reportConfig);
+        } else if (reportConfig.isAppendToDestination()) {
+            workbook = getExistingWorkbook(reportConfig);
         } else {
             workbook = copyTemplate(reportConfig);
         }
@@ -56,6 +59,15 @@ public class ExcelReportGenerator implements ReportGenerator {
             File srcFile = new File(reportConfig.getTemplateFile());
             File destFile = new File(reportConfig.getDestinationFile());
             FileUtils.copyFile(srcFile, destFile);
+            return getExistingWorkbook(reportConfig);
+        } catch (IOException e) {
+            throw new ReportGenerationException(e);
+        }
+    }
+
+    private Workbook getExistingWorkbook(ReportConfig reportConfig) throws ReportGenerationException {
+        try {
+            File destFile = new File(reportConfig.getDestinationFile());
             FileInputStream fileInputStream = new FileInputStream(destFile);
             OPCPackage opc = OPCPackage.open(fileInputStream);
             return WorkbookFactory.create(opc);

@@ -55,6 +55,57 @@ public class ReportGenerationIT extends BaseExcelTest {
     }
 
     @Test
+    public void testWithAppend() throws Exception {
+        ReflectionTestUtils.setField(worksheetPopulator, "MAX_OFFSET", 10000);
+        ReflectionTestUtils.setField(workbookPopulator, "worksheetPopulator", worksheetPopulator);
+        ReflectionTestUtils.setField(reportGenerator, "workbookPopulator", workbookPopulator);
+        ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/Initial.json");
+        reportGenerator.generateReport(reportConfig);
+        FileInputStream fileInputStream = new FileInputStream(reportConfig.getDestinationFile());
+        OPCPackage opc = OPCPackage.open(fileInputStream);
+        Workbook workbook = WorkbookFactory.create(opc);
+        assertEquals(2, workbook.getNumberOfSheets());
+        Sheet sheet1 = workbook.getSheetAt(0);
+        Sheet sheet2 = workbook.getSheetAt(1);
+        assertEquals("ingest", sheet1.getSheetName());
+        assertEquals("ingest ", sheet2.getSheetName());
+        assertEquals(806, sheet1.getPhysicalNumberOfRows());
+        assertEquals(4, sheet1.getRow(0).getPhysicalNumberOfCells());
+        assertEquals(2, sheet2.getPhysicalNumberOfRows());
+        assertEquals(4, sheet2.getRow(0).getPhysicalNumberOfCells());
+        assertEquals("org_id", sheet1.getRow(0).getCell(0).getStringCellValue());
+        assertEquals("accountname", sheet1.getRow(0).getCell(1).getStringCellValue());
+        assertEquals("date", sheet1.getRow(0).getCell(2).getStringCellValue());
+        assertEquals("size_gb", sheet1.getRow(0).getCell(3).getStringCellValue());
+        assertEquals("org_id", sheet2.getRow(0).getCell(0).getStringCellValue());
+        assertEquals("accountname", sheet2.getRow(0).getCell(1).getStringCellValue());
+        assertEquals("date", sheet2.getRow(0).getCell(2).getStringCellValue());
+        assertEquals("size_gb", sheet2.getRow(0).getCell(3).getStringCellValue());
+        reportConfig = getReportConfigFromResource("/testReportConfig/Append.json");
+        reportGenerator.generateReport(reportConfig);
+        fileInputStream = new FileInputStream(reportConfig.getDestinationFile());
+        opc = OPCPackage.open(fileInputStream);
+        workbook = WorkbookFactory.create(opc);
+        assertEquals(2, workbook.getNumberOfSheets());
+        sheet1 = workbook.getSheetAt(0);
+        sheet2 = workbook.getSheetAt(1);
+        assertEquals("ingest", sheet1.getSheetName());
+        assertEquals("ingest ", sheet2.getSheetName());
+        assertEquals(1611, sheet1.getPhysicalNumberOfRows());
+        assertEquals(4, sheet1.getRow(0).getPhysicalNumberOfCells());
+        assertEquals(3, sheet2.getPhysicalNumberOfRows());
+        assertEquals(4, sheet2.getRow(0).getPhysicalNumberOfCells());
+        assertEquals("org_id", sheet1.getRow(0).getCell(0).getStringCellValue());
+        assertEquals("accountname", sheet1.getRow(0).getCell(1).getStringCellValue());
+        assertEquals("date", sheet1.getRow(0).getCell(2).getStringCellValue());
+        assertEquals("size_gb", sheet1.getRow(0).getCell(3).getStringCellValue());
+        assertEquals("org_id", sheet2.getRow(0).getCell(0).getStringCellValue());
+        assertEquals("accountname", sheet2.getRow(0).getCell(1).getStringCellValue());
+        assertEquals("date", sheet2.getRow(0).getCell(2).getStringCellValue());
+        assertEquals("size_gb", sheet2.getRow(0).getCell(3).getStringCellValue());
+    }
+
+    @Test
     public void testWithIteration() throws Exception {
         ReflectionTestUtils.setField(worksheetPopulator, "MAX_OFFSET", 100);
         ReflectionTestUtils.setField(workbookPopulator, "worksheetPopulator", worksheetPopulator);

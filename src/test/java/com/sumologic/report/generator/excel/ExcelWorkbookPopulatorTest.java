@@ -1,6 +1,7 @@
 package com.sumologic.report.generator.excel;
 
 import com.sumologic.report.config.ReportConfig;
+import com.sumologic.report.generator.ReportGenerationException;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class ExcelWorkbookPopulatorTest extends BaseExcelTest {
     @Autowired
     private WorksheetPopulator worksheetPopulator;
 
-    @Test (expected = IOException.class)
+    @Test (expected = ReportGenerationException.class)
     public void testIOException() throws Exception {
         ReportConfig reportConfig = mock(ReportConfig.class);
         Workbook workbook = new XSSFWorkbook();
@@ -38,7 +39,7 @@ public class ExcelWorkbookPopulatorTest extends BaseExcelTest {
     public void testWorkbookPopulation() throws Exception {
         ReportConfig reportConfig = getReportConfigFromResource("/testReportConfig/testWorkbookPopulation.json");
         ReflectionTestUtils.setField(workbookPopulator, "worksheetPopulator", worksheetPopulator);
-        doNothing().when(worksheetPopulator).populateSheetWithData(any(), any(), any());
+        doNothing().when(worksheetPopulator).populateSheetWithData(any());
         Workbook workbook = workbookGenerator.generateWorkbook(reportConfig);
         workbookPopulator.populateWorkbookWithData(reportConfig, workbook);
     }
