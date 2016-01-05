@@ -33,10 +33,10 @@ public class SumoDataServiceImpl implements SumoDataService {
     }
 
     @Override
-    public GetSearchJobStatusResponse pollSearchJobUntilComplete(String searchJobId) {
+    public GetSearchJobStatusResponse pollSearchJobUntilComplete(String searchJobId, String jobName) {
         GetSearchJobStatusResponse response = client.getSearchJobStatus(searchJobId);
         while ("GATHERING RESULTS".equals(response.getState())) {
-            LOGGER.info("checking search job status");
+            LOGGER.info("checking search job status for sheet " + jobName);
             LOGGER.info("search job state is " + response.getState() + ", will recheck in 5 seconds");
             try {
                 Thread.sleep(POLL_INTERVAL);

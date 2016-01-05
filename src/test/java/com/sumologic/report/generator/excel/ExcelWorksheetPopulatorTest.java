@@ -41,7 +41,7 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         ReportSheet reportSheet = new ReportSheet();
         reportSheet.setSheetName("ingest");
         when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
-        when(sumoDataService.pollSearchJobUntilComplete("1234")).thenReturn(new GetSearchJobStatusResponse());
+        when(sumoDataService.pollSearchJobUntilComplete("1234", "ingest")).thenReturn(new GetSearchJobStatusResponse());
         GetRecordsForSearchJobResponse recordsResponse = new GetRecordsForSearchJobResponse();
         recordsResponse.setFields(new ArrayList<>());
         recordsResponse.setRecords(new ArrayList<>());
@@ -68,7 +68,7 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
         GetSearchJobStatusResponse searchJobStatusResponse = new GetSearchJobStatusResponse();
         searchJobStatusResponse.setRecordCount(2);
-        when(sumoDataService.pollSearchJobUntilComplete("1234")).thenReturn(searchJobStatusResponse);
+        when(sumoDataService.pollSearchJobUntilComplete("1234", "ingest")).thenReturn(searchJobStatusResponse);
         GetRecordsForSearchJobResponse recordsResponse = getSampleRecordsResponse();
         when(sumoDataService.getRecordsResponse("1234", 0, 10000)).thenReturn(recordsResponse);
         Workbook workbook = new XSSFWorkbook();
@@ -97,7 +97,7 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
         GetSearchJobStatusResponse searchJobStatusResponse = new GetSearchJobStatusResponse();
         searchJobStatusResponse.setRecordCount(2);
-        when(sumoDataService.pollSearchJobUntilComplete("1234")).thenReturn(searchJobStatusResponse);
+        when(sumoDataService.pollSearchJobUntilComplete("1234", "ingest")).thenReturn(searchJobStatusResponse);
         GetRecordsForSearchJobResponse recordsResponse = getSampleRecordsResponse();
         when(sumoDataService.getRecordsResponse("1234", 0, 10000)).thenReturn(recordsResponse);
         Workbook workbook = new XSSFWorkbook();
@@ -123,7 +123,7 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
         GetSearchJobStatusResponse searchJobStatusResponse = new GetSearchJobStatusResponse();
         searchJobStatusResponse.setRecordCount(2);
-        when(sumoDataService.pollSearchJobUntilComplete("1234")).thenReturn(searchJobStatusResponse);
+        when(sumoDataService.pollSearchJobUntilComplete("1234", "ingest")).thenReturn(searchJobStatusResponse);
         GetRecordsForSearchJobResponse recordsResponse = getSampleRecordsResponse();
         when(sumoDataService.getRecordsResponse("1234", 0, 10000)).thenReturn(recordsResponse);
         Workbook workbook = new XSSFWorkbook();
@@ -154,7 +154,7 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
         GetSearchJobStatusResponse searchJobStatusResponse = new GetSearchJobStatusResponse();
         searchJobStatusResponse.setRecordCount(2);
-        when(sumoDataService.pollSearchJobUntilComplete("1234")).thenReturn(searchJobStatusResponse);
+        when(sumoDataService.pollSearchJobUntilComplete("1234", "ingest")).thenReturn(searchJobStatusResponse);
         GetRecordsForSearchJobResponse recordsResponse = getSampleRecordsResponse();
         when(sumoDataService.getRecordsResponse("1234", 0, 1)).thenReturn(recordsResponse);
         Workbook workbook = new XSSFWorkbook();

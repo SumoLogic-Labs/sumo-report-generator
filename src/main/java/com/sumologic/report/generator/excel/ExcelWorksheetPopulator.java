@@ -26,7 +26,8 @@ public class ExcelWorksheetPopulator implements WorksheetPopulator {
     public void populateSheetWithData(WorksheetConfig worksheetConfig) {
         String jobId = worksheetConfig.getSumoDataService().executeSearchJob(worksheetConfig.getReportSheet().getSearchJob());
         LOGGER.info("got back search job id " + jobId);
-        GetSearchJobStatusResponse statusResponse = worksheetConfig.getSumoDataService().pollSearchJobUntilComplete(jobId);
+        GetSearchJobStatusResponse statusResponse =
+                worksheetConfig.getSumoDataService().pollSearchJobUntilComplete(jobId, worksheetConfig.getReportSheet().getSheetName());
         LOGGER.info("found a total of " + statusResponse.getRecordCount() + " records");
         iterateAndPopulate(jobId, statusResponse, worksheetConfig);
     }

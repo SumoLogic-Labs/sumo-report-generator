@@ -8,7 +8,7 @@ public interface SumoDataService {
 
     String executeSearchJob(SearchJob searchJob);
 
-    GetSearchJobStatusResponse pollSearchJobUntilComplete(String searchJobId);
+    GetSearchJobStatusResponse pollSearchJobUntilComplete(String searchJobId, String jobName);
 
     GetRecordsForSearchJobResponse getRecordsResponse(String searchJobId, int start, int offset);
 
