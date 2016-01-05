@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Service
 public class ExcelReportGenerator implements ReportGenerator {
@@ -32,10 +34,12 @@ public class ExcelReportGenerator implements ReportGenerator {
     public void generateReport(ReportConfig reportConfig) throws ReportGenerationException {
         try {
             LOGGER.info("starting report generation");
+            long start = System.currentTimeMillis();
             LOGGER.debug("using config: " + reportConfig);
             Workbook workbook = getWorkbook(reportConfig);
             workbookPopulator.populateWorkbookWithData(reportConfig, workbook);
-            LOGGER.info("report successfully generated");
+            String timeTaken = new SimpleDateFormat("mm:ss").format(new Date(System.currentTimeMillis() - start));
+            LOGGER.info("report successfully generated in " + timeTaken);
         } catch (IOException | InvalidFormatException e ) {
             LOGGER.error("unabe to generate report!");
             throw new ReportGenerationException(e);

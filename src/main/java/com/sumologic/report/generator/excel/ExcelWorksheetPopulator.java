@@ -14,6 +14,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Service
 public class ExcelWorksheetPopulator implements WorksheetPopulator {
 
@@ -24,12 +27,15 @@ public class ExcelWorksheetPopulator implements WorksheetPopulator {
 
     @Override
     public void populateSheetWithData(WorksheetConfig worksheetConfig) {
+        long start = System.currentTimeMillis();
         String jobId = worksheetConfig.getSumoDataService().executeSearchJob(worksheetConfig.getReportSheet().getSearchJob());
         LOGGER.info("got back search job id " + jobId);
         GetSearchJobStatusResponse statusResponse =
                 worksheetConfig.getSumoDataService().pollSearchJobUntilComplete(jobId, worksheetConfig.getReportSheet().getSheetName());
         LOGGER.info("found a total of " + statusResponse.getRecordCount() + " records");
         iterateAndPopulate(jobId, statusResponse, worksheetConfig);
+        String timeTaken = new SimpleDateFormat("mm:ss").format(new Date(System.currentTimeMillis() - start));
+        LOGGER.info("sheet successfully populated in " + timeTaken);
     }
 
 
