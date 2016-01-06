@@ -9,8 +9,17 @@ public class ReportConfig {
     private String url;
     private String destinationFile;
     private String templateFile;
+    private boolean appendToDestination;
     private PropertyReplacementConfig propertyReplacementConfig;
     private List<ReportSheet> reportSheets;
+
+    public boolean isAppendToDestination() {
+        return appendToDestination;
+    }
+
+    public void setAppendToDestination(boolean appendToDestination) {
+        this.appendToDestination = appendToDestination;
+    }
 
     public String getUsername() {
         return username;
@@ -75,6 +84,7 @@ public class ReportConfig {
                 ", url='" + url + '\'' +
                 ", destinationFile='" + destinationFile + '\'' +
                 ", templateFile='" + templateFile + '\'' +
+                ", appendToDestination=" + appendToDestination +
                 ", propertyReplacementConfig=" + propertyReplacementConfig +
                 ", reportSheets=" + reportSheets +
                 '}';

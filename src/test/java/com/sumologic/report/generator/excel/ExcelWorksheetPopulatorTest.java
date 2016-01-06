@@ -4,7 +4,9 @@ import com.sumologic.client.searchjob.model.GetRecordsForSearchJobResponse;
 import com.sumologic.client.searchjob.model.GetSearchJobStatusResponse;
 import com.sumologic.client.searchjob.model.SearchJobField;
 import com.sumologic.client.searchjob.model.SearchJobRecord;
+import com.sumologic.report.config.ReportConfig;
 import com.sumologic.report.config.ReportSheet;
+import com.sumologic.report.config.WorksheetConfig;
 import com.sumologic.service.SumoDataService;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -12,6 +14,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -38,14 +41,21 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         ReportSheet reportSheet = new ReportSheet();
         reportSheet.setSheetName("ingest");
         when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
-        when(sumoDataService.pollSearchJobUntilComplete("1234")).thenReturn(new GetSearchJobStatusResponse());
+        when(sumoDataService.pollSearchJobUntilComplete("1234", "ingest")).thenReturn(new GetSearchJobStatusResponse());
         GetRecordsForSearchJobResponse recordsResponse = new GetRecordsForSearchJobResponse();
         recordsResponse.setFields(new ArrayList<>());
         recordsResponse.setRecords(new ArrayList<>());
         when(sumoDataService.getRecordsResponse("1234", 0, 10000)).thenReturn(recordsResponse);
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("ingest");
-        worksheetPopulator.populateSheetWithData(sheet, reportSheet, sumoDataService);
+        WorksheetConfig config = new WorksheetConfig();
+        config.setSumoDataService(sumoDataService);
+        config.setReportSheet(reportSheet);
+        config.setWorkbookSheet(sheet);
+        ReportConfig reportConfig = Mockito.mock(ReportConfig.class);
+        when(reportConfig.isAppendToDestination()).thenReturn(false);
+        config.setReportConfig(reportConfig);
+        worksheetPopulator.populateSheetWithData(config);
         assertEquals("ingest", sheet.getSheetName());
         assertEquals(1, sheet.getPhysicalNumberOfRows());
     }
@@ -58,7 +68,7 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
         GetSearchJobStatusResponse searchJobStatusResponse = new GetSearchJobStatusResponse();
         searchJobStatusResponse.setRecordCount(2);
-        when(sumoDataService.pollSearchJobUntilComplete("1234")).thenReturn(searchJobStatusResponse);
+        when(sumoDataService.pollSearchJobUntilComplete("1234", "ingest")).thenReturn(searchJobStatusResponse);
         GetRecordsForSearchJobResponse recordsResponse = getSampleRecordsResponse();
         when(sumoDataService.getRecordsResponse("1234", 0, 10000)).thenReturn(recordsResponse);
         Workbook workbook = new XSSFWorkbook();
@@ -66,7 +76,14 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         Row colRow = sheet.createRow(0);
         colRow.createCell(0).setCellValue("column1");
         colRow.createCell(1).setCellValue("column2");
-        worksheetPopulator.populateSheetWithData(sheet, reportSheet, sumoDataService);
+        WorksheetConfig config = new WorksheetConfig();
+        config.setSumoDataService(sumoDataService);
+        config.setReportSheet(reportSheet);
+        config.setWorkbookSheet(sheet);
+        ReportConfig reportConfig = Mockito.mock(ReportConfig.class);
+        when(reportConfig.isAppendToDestination()).thenReturn(false);
+        config.setReportConfig(reportConfig);
+        worksheetPopulator.populateSheetWithData(config);
         assertEquals(1, workbook.getNumberOfSheets());
         assertEquals("ingest", sheet.getSheetName());
         assertEquals(3, sheet.getPhysicalNumberOfRows());
@@ -80,15 +97,53 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
         GetSearchJobStatusResponse searchJobStatusResponse = new GetSearchJobStatusResponse();
         searchJobStatusResponse.setRecordCount(2);
-        when(sumoDataService.pollSearchJobUntilComplete("1234")).thenReturn(searchJobStatusResponse);
+        when(sumoDataService.pollSearchJobUntilComplete("1234", "ingest")).thenReturn(searchJobStatusResponse);
         GetRecordsForSearchJobResponse recordsResponse = getSampleRecordsResponse();
         when(sumoDataService.getRecordsResponse("1234", 0, 10000)).thenReturn(recordsResponse);
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("ingest");
-        worksheetPopulator.populateSheetWithData(sheet, reportSheet, sumoDataService);
+        WorksheetConfig config = new WorksheetConfig();
+        config.setSumoDataService(sumoDataService);
+        config.setReportSheet(reportSheet);
+        config.setWorkbookSheet(sheet);
+        ReportConfig reportConfig = Mockito.mock(ReportConfig.class);
+        when(reportConfig.isAppendToDestination()).thenReturn(false);
+        config.setReportConfig(reportConfig);
+        worksheetPopulator.populateSheetWithData(config);
         assertEquals(1, workbook.getNumberOfSheets());
         assertEquals("ingest", sheet.getSheetName());
         assertEquals(3, sheet.getPhysicalNumberOfRows());
+    }
+
+    @Test
+    public void testWithAppend() throws Exception {
+        ReflectionTestUtils.setField(worksheetPopulator, "MAX_OFFSET", 10000);
+        ReportSheet reportSheet = new ReportSheet();
+        reportSheet.setSheetName("ingest");
+        when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
+        GetSearchJobStatusResponse searchJobStatusResponse = new GetSearchJobStatusResponse();
+        searchJobStatusResponse.setRecordCount(2);
+        when(sumoDataService.pollSearchJobUntilComplete("1234", "ingest")).thenReturn(searchJobStatusResponse);
+        GetRecordsForSearchJobResponse recordsResponse = getSampleRecordsResponse();
+        when(sumoDataService.getRecordsResponse("1234", 0, 10000)).thenReturn(recordsResponse);
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("ingest");
+        Row colRow = sheet.createRow(0);
+        colRow.createCell(0).setCellValue("column1");
+        colRow.createCell(1).setCellValue("column2");
+        WorksheetConfig config = new WorksheetConfig();
+        config.setSumoDataService(sumoDataService);
+        config.setReportSheet(reportSheet);
+        config.setWorkbookSheet(sheet);
+        ReportConfig reportConfig = Mockito.mock(ReportConfig.class);
+        when(reportConfig.isAppendToDestination()).thenReturn(false);
+        config.setReportConfig(reportConfig);
+        worksheetPopulator.populateSheetWithData(config);
+        when(reportConfig.isAppendToDestination()).thenReturn(true);
+        worksheetPopulator.populateSheetWithData(config);
+        assertEquals(1, workbook.getNumberOfSheets());
+        assertEquals("ingest", sheet.getSheetName());
+        assertEquals(5, sheet.getPhysicalNumberOfRows());
     }
 
     @Test
@@ -99,12 +154,19 @@ public class ExcelWorksheetPopulatorTest extends BaseExcelTest {
         when(sumoDataService.executeSearchJob(any())).thenReturn("1234");
         GetSearchJobStatusResponse searchJobStatusResponse = new GetSearchJobStatusResponse();
         searchJobStatusResponse.setRecordCount(2);
-        when(sumoDataService.pollSearchJobUntilComplete("1234")).thenReturn(searchJobStatusResponse);
+        when(sumoDataService.pollSearchJobUntilComplete("1234", "ingest")).thenReturn(searchJobStatusResponse);
         GetRecordsForSearchJobResponse recordsResponse = getSampleRecordsResponse();
         when(sumoDataService.getRecordsResponse("1234", 0, 1)).thenReturn(recordsResponse);
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("ingest");
-        worksheetPopulator.populateSheetWithData(sheet, reportSheet, sumoDataService);
+        WorksheetConfig config = new WorksheetConfig();
+        config.setSumoDataService(sumoDataService);
+        config.setReportSheet(reportSheet);
+        config.setWorkbookSheet(sheet);
+        ReportConfig reportConfig = Mockito.mock(ReportConfig.class);
+        when(reportConfig.isAppendToDestination()).thenReturn(false);
+        config.setReportConfig(reportConfig);
+        worksheetPopulator.populateSheetWithData(config);
         assertEquals(1, workbook.getNumberOfSheets());
         assertEquals("ingest", sheet.getSheetName());
         assertEquals(3, sheet.getPhysicalNumberOfRows());

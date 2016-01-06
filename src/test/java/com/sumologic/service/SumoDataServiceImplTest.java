@@ -64,7 +64,7 @@ public class SumoDataServiceImplTest extends BaseSumoReportGeneratorTest {
         GetSearchJobStatusResponse secondResponse = new GetSearchJobStatusResponse();
         secondResponse.setState("DONE GATHERING RESULTS");
         when(client.getSearchJobStatus(anyString())).thenReturn(firstResponse).thenReturn(secondResponse);
-        GetSearchJobStatusResponse response = sumoDataService.pollSearchJobUntilComplete("1234");
+        GetSearchJobStatusResponse response = sumoDataService.pollSearchJobUntilComplete("1234", "test");
         verify(client, times(2)).getSearchJobStatus(anyString());
         Assert.assertEquals("DONE GATHERING RESULTS", response.getState());
     }
@@ -84,7 +84,7 @@ public class SumoDataServiceImplTest extends BaseSumoReportGeneratorTest {
         secondResponse.setState("DONE GATHERING RESULTS");
         when(client.getSearchJobStatus(anyString())).thenReturn(firstResponse).thenReturn(secondResponse);
         Thread.currentThread().interrupt();
-        GetSearchJobStatusResponse response = sumoDataService.pollSearchJobUntilComplete("1234");
+        GetSearchJobStatusResponse response = sumoDataService.pollSearchJobUntilComplete("1234", "test");
         verify(client, times(2)).getSearchJobStatus(anyString());
         Assert.assertEquals("DONE GATHERING RESULTS", response.getState());
     }
