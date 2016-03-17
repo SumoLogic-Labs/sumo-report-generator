@@ -10,11 +10,14 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,6 +41,11 @@ public class ExcelReportGenerator implements ReportGenerator {
             LOGGER.debug("using config: " + reportConfig);
             Workbook workbook = getWorkbook(reportConfig);
             workbookPopulator.populateWorkbookWithData(reportConfig, workbook);
+            LOGGER.info("updating formulas");
+            XSSFFormulaEvaluator.evaluateAllFormulaCells((XSSFWorkbook) workbook);
+            FileOutputStream fileOut = new FileOutputStream(reportConfig.getDestinationFile());
+            workbook.write(fileOut);
+            fileOut.close();
             String timeTaken = new SimpleDateFormat("mm:ss").format(new Date(System.currentTimeMillis() - start));
             LOGGER.info("report successfully generated in " + timeTaken);
         } catch (IOException | InvalidFormatException e ) {
