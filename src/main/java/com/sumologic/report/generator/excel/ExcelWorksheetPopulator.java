@@ -74,7 +74,12 @@ public class ExcelWorksheetPopulator implements WorksheetPopulator {
         int rowIndex = startRowIndex+1;
         for (SearchJobRecord record : recordsResponse.getRecords()) {
             LOGGER.trace("creating row " + rowIndex);
-            Row row = workbookSheet.createRow(rowIndex);
+            Row row;
+            if (workbookSheet.getRow(rowIndex) != null) {
+                row = workbookSheet.getRow(rowIndex);
+            } else {
+                row = workbookSheet.createRow(rowIndex);
+            }
             for (SearchJobField field : recordsResponse.getFields()) {
                 int colIndex = ExcelUtils.lookupCellIndexByColumnName(field.getName(), workbookSheet);
                 LOGGER.trace("creating cell " + colIndex + " with value " + record.getMap().get(field.getName()));
