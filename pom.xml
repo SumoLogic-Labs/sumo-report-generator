@@ -55,7 +55,7 @@
         <!-- start sonar properties-->
         <sonar.java.source>1.8</sonar.java.source>
         <sonar.java.target>1.8</sonar.java.target>
-        <sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true&amp;useConfigs=maxPerformance</sonar.jdbc.url>
+        <sonar.jdbc.url>jdbc:h2:tcp://localhost:9092/sonar</sonar.jdbc.url>
         <sonar.maven.report.plugin>0.1</sonar.maven.report.plugin>
         <sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
         <sonar.sources>src/main</sonar.sources>
