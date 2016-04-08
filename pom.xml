@@ -9,10 +9,12 @@
     <name>Sumo Logic Report Generator</name>
     <description>Sumologic Report Generator</description>
     <url>https://github.com/SumoLogic/sumo-report-generator/wiki</url>
+
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 
@@ -190,6 +192,41 @@
     <build>
 
         <plugins>
+
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <version>1.10.b1</version>
+                <configuration>
+                    <basedir>${basedir}</basedir>
+                    <header>${basedir}/src/etc/header.txt</header>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <strictCheck>true</strictCheck>
+                    <aggregate>false</aggregate>
+                    <includes>
+                        <include>src/**</include>
+                        <include>**/test/**</include>
+                    </includes>
+                    <excludes>
+                        <exclude>target/**</exclude>
+                    </excludes>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <properties>
+                        <year>${project.inceptionYear}</year>
+                        <email>opensource@sumologic.com</email>
+                    </properties>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
