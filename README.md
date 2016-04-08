@@ -19,3 +19,7 @@ usage: SumoLogic Report Generator
  -t,--trace          Enable trace logging.
  -v,--version        Get the version of the utility.
 ```
+
+
+##License
+Released under Apache 2.0 License.
