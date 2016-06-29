@@ -28,7 +28,7 @@ import java.net.MalformedURLException;
 public class SumoDataServiceFactory {
 
     public SumoDataService getSumoDataService(ReportConfig reportConfig) throws MalformedURLException {
-        SumoLogicClient sumoLogicClient = new SumoLogicClient(reportConfig.getUsername(), reportConfig.getPassword());
+        SumoLogicClient sumoLogicClient = new SumoLogicClient(reportConfig.getAccessId(), reportConfig.getAccessKey());
         sumoLogicClient.setURL(reportConfig.getUrl());
         return new SumoDataServiceImpl(sumoLogicClient, reportConfig.getPropertyReplacementConfig());
     }

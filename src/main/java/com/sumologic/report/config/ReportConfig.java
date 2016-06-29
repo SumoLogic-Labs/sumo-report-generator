@@ -22,8 +22,8 @@ import java.util.List;
 
 public class ReportConfig {
 
-    private String username;
-    private String password;
+    private String accessId;
+    private String accessKey;
     private String url;
     private String destinationFile;
     private String templateFile;
@@ -39,20 +39,20 @@ public class ReportConfig {
         this.appendToDestination = appendToDestination;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAccessId() {
+        return accessId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAccessId(String accessId) {
+        this.accessId = accessId;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAccessKey() {
+        return accessKey;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
     }
 
     public String getUrl() {
@@ -98,7 +98,7 @@ public class ReportConfig {
     @Override
     public String toString() {
         return "ReportConfig{" +
-                "username='" + username + '\'' +
+                "accessId='" + accessId + '\'' +
                 ", url='" + url + '\'' +
                 ", destinationFile='" + destinationFile + '\'' +
                 ", templateFile='" + templateFile + '\'' +
