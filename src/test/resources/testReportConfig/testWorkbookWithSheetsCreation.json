@@ -1,6 +1,6 @@
 {
-  "username" : "",
-  "password" : "",
+  "accessId" : "",
+  "accessKey" : "",
   "url" : "",
   "destinationFile" : "",
   "reportSheets" : [
