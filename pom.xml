@@ -38,7 +38,7 @@
         <apache.commons.logging>1.2</apache.commons.logging>
         <cobertura.maven.plugin.version>2.7</cobertura.maven.plugin.version>
         <external.atlassian.jgitflow.version>1.0-m5.1</external.atlassian.jgitflow.version>
-        <jackson.version>2.9.8</jackson.version>
+        <jackson.version>2.12.6.1</jackson.version>
         <jacoco.verion>0.7.4.201502262128</jacoco.verion>
         <java.version>1.8</java.version>
         <junit.version>4.12</junit.version>
