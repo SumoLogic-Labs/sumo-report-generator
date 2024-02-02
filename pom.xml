@@ -52,7 +52,7 @@
         <mockito.version>1.10.19</mockito.version>
         <poi.version>3.12</poi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>4.2.1.RELEASE</spring.version>
+        <spring.version>5.2.22.RELEASE</spring.version>
         <sumo.java.client.version>2.0</sumo.java.client.version>
         <!-- start sonar properties-->
         <sonar.java.source>1.8</sonar.java.source>
